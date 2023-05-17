@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -7,6 +8,7 @@ import 'package:http/http.dart';
 import '../../domain/either/either.dart';
 
 part 'failure.dart';
+part 'logs.dart';
 part 'parse_response_body.dart';
 
 enum HttpMethod { get, post, patch, delete, put }
@@ -17,23 +19,26 @@ class Http {
     required String baseUrl,
     required String apiKey,
   })  : _client = client,
-        _baseUrl = baseUrl,
-        _apiKey = apiKey;
+        _apiKey = apiKey,
+        _baseUrl = baseUrl;
 
+  final Client _client;
   final String _baseUrl;
   final String _apiKey;
-  final Client _client;
 
   Future<Either<HttpFailure, R>> request<R>(
     String path, {
-    required R Function(dynamic responseBody) onSucces,
+    required R Function(dynamic responseBody) onSuccess,
     HttpMethod method = HttpMethod.get,
     Map<String, String> headers = const {},
     Map<String, String> queryParameters = const {},
     Map<String, dynamic> body = const {},
     bool useApiKey = true,
+    String languageCode = 'en',
+    Duration timeout = const Duration(seconds: 10),
   }) async {
     Map<String, dynamic> logs = {};
+    StackTrace? stackTrace;
     try {
       if (useApiKey) {
         headers = {...headers, 'Authorization': _apiKey};
@@ -43,9 +48,13 @@ class Http {
       );
       if (queryParameters.isNotEmpty) {
         url = url.replace(
-          queryParameters: queryParameters,
+          queryParameters: {
+            ...queryParameters,
+            'language': languageCode,
+          },
         );
       }
+
       headers = {
         'Content-Type': 'application/json',
         ...headers,
@@ -56,68 +65,87 @@ class Http {
         'url': url.toString(),
         'method': method.name,
         'body': body,
+        'headers': headers,
       };
+
       switch (method) {
         case HttpMethod.get:
-          response = await _client.get(url);
+          response = await _client
+              .get(
+                url,
+                headers: headers,
+              )
+              .timeout(timeout);
           break;
         case HttpMethod.post:
-          response = await _client.post(
-            url,
-            headers: headers,
-            body: bodyString,
-          );
+          response = await _client
+              .post(
+                url,
+                headers: headers,
+                body: bodyString,
+              )
+              .timeout(timeout);
           break;
         case HttpMethod.patch:
-          response = await _client.patch(
-            url,
-            headers: headers,
-            body: bodyString,
-          );
+          response = await _client
+              .patch(
+                url,
+                headers: headers,
+                body: bodyString,
+              )
+              .timeout(timeout);
           break;
         case HttpMethod.delete:
-          response = await _client.delete(
-            url,
-            headers: headers,
-            body: bodyString,
-          );
+          response = await _client
+              .delete(
+                url,
+                headers: headers,
+                body: bodyString,
+              )
+              .timeout(timeout);
           break;
         case HttpMethod.put:
-          response = await _client.put(
-            url,
-            headers: headers,
-            body: bodyString,
-          );
+          response = await _client
+              .put(
+                url,
+                headers: headers,
+                body: bodyString,
+              )
+              .timeout(timeout);
           break;
       }
 
       final statusCode = response.statusCode;
+      final responseBodyUtf8 = utf8.decode(response.bodyBytes);
       final responseBody = _parseResponseBody(
-        response.body,
+        responseBodyUtf8,
       );
-
       logs = {
         ...logs,
+        'startTime': DateTime.now().toString(),
         'statusCode': statusCode,
         'responseBody': responseBody,
       };
 
       if (statusCode >= 200 && statusCode < 300) {
-        return Either.right(onSucces(
-          responseBody,
-        ));
+        return Either.right(
+          onSuccess(
+            responseBody,
+          ),
+        );
       }
 
       return Either.left(
         HttpFailure(
           statusCode: statusCode,
+          data: responseBody,
         ),
       );
-    } catch (e, stackTrace) {
+    } catch (e, s) {
+      stackTrace = s;
       logs = {
         ...logs,
-        'exception': e.runtimeType,
-        'stackTrace': stackTrace,
+        'exception': e.toString(),
       };
       if (e is SocketException || e is ClientException) {
         logs = {
@@ -130,17 +158,18 @@ class Http {
           ),
         );
       }
+
       return Either.left(
         HttpFailure(
           exception: e,
         ),
       );
     } finally {
-      if (kDebugMode) {
-        print(
-          const JsonEncoder.withIndent('').convert(logs),
-        );
-      }
+      logs = {
+        ...logs,
+        'endTime': DateTime.now().toString(),
+      };
+      _printLogs(logs, stackTrace);
     }
   }
 }

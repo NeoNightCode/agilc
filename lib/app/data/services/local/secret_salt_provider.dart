@@ -5,17 +5,21 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class SecretSaltProvider with ChangeNotifier {
+  SecretSaltProvider(this._secureStorage);
+
   String? _secretSalt;
+
+  final FlutterSecureStorage _secureStorage;
 
   String? get secretSalt => _secretSalt;
 
   Future<void> fetchSecretSalt([String? secretSalt]) async {
-    const storage = FlutterSecureStorage();
-
-    String? existingSecretSalt = await storage.read(key: 'secret_salt');
+    String? existingSecretSalt = await _secureStorage.read(
+      key: 'secret_salt',
+    );
 
     if (existingSecretSalt == null && secretSalt != null) {
-      await storage.write(key: 'secret_salt', value: secretSalt);
+      await _secureStorage.write(key: 'secret_salt', value: secretSalt);
       existingSecretSalt = secretSalt;
     }
 

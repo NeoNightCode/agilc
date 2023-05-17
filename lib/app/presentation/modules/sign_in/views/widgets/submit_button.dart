@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../data/services/local/secret_salt_provider.dart';
-import '../../../../../domain/enums/enums.dart';
-import '../../../../../domain/repositories/authentication_repository.dart';
+import '../../../../global/controllers/session_controller.dart';
 import '../../../../routes/routes.dart';
 import '../../controller/sign_in_controller.dart';
 
@@ -31,36 +29,31 @@ class SubmitButton extends StatelessWidget {
   Future<void> _submit(BuildContext context) async {
     final SignInController controller = context.read();
 
-    controller.onFetchingChanged(true);
-
-    final SecretSaltProvider secretSaltProvider = context.read();
-
-    final hashedPassword = secretSaltProvider.hashPassword(
-        controller.state.password, secretSaltProvider.secretSalt);
-
-    final result = await context
-        .read<AutheticationRepository>()
-        .signIn(controller.state.username, hashedPassword);
+    final result = await controller.submit();
 
     if (!controller.mounted) {
       return;
     }
 
     result.when(
-      (failure) {
-        controller.onFetchingChanged(false);
-        final message = {
-          SigInFailure.notFound: 'Usuario no encontrado',
-          SigInFailure.unauthorized: 'Contraseña Incorrecta',
-          SigInFailure.unknown: 'Error Desconocido',
-          SigInFailure.network: 'Sin conección a internet',
-        }[failure];
+      left: (failure) {
+        final message = failure.when(
+          notFound: () => 'El usuario no existe',
+          network: () => 'Sin conección a Internet',
+          unauthorized: () => 'Credenciales Incorrectos',
+          unknown: () => 'Error Desconocido',
+        );
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(message!)),
+          SnackBar(content: Text(message)),
         );
       },
-      (user) {
-        Navigator.pushReplacementNamed(context, Routes.home);
+      right: (user) {
+        final SessionController sessionController = context.read();
+        sessionController.setUser(user);
+        Navigator.pushReplacementNamed(
+          context,
+          Routes.home,
+        );
       },
     );
   }

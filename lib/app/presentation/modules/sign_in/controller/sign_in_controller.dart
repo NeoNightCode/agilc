@@ -1,30 +1,54 @@
-import 'package:flutter/foundation.dart';
+import '../../../../data/services/local/secret_salt_provider.dart';
+import '../../../../domain/either/either.dart';
+import '../../../../domain/failures/sign_in/sign_in_failure.dart';
+import '../../../../domain/models/user/user.dart';
+import '../../../../domain/repositories/authentication_repository.dart';
+import '../../../global/state_notifier.dart';
+import 'state/sign_in_state.dart';
 
-part 'sign_in_state.dart';
+class SignInController extends StateNotifier<SignInState> {
+  SignInController(
+    super.state, {
+    required this.autheticationRepository,
+    required this.secretSaltProvider,
+  });
 
-class SignInController extends ChangeNotifier {
-  SignInState _state = SignInState();
-  bool _mounted = true;
+  final AutheticationRepository autheticationRepository;
 
-  SignInState get state => _state;
-  bool get mounted => _mounted;
+  final SecretSaltProvider secretSaltProvider;
 
   void onUsernameChanged(String text) {
-    _state = _state.copyWith(username: text.trim().toLowerCase());
+    onlyUpdate(
+      state.copyWith(
+        username: text.trim().toLowerCase(),
+      ),
+    );
   }
 
   void onPasswordChanged(String text) {
-    _state = _state.copyWith(password: text.replaceAll(' ', ''));
+    onlyUpdate(
+      state.copyWith(
+        password: text.replaceAll(' ', ''),
+      ),
+    );
   }
 
-  void onFetchingChanged(bool value) {
-    _state = _state.copyWith(fetching: value);
-    notifyListeners();
-  }
+  Future<Either<SignInFailure, User>> submit() async {
+    state = state.copyWith(fetching: true);
 
-  @override
-  void dispose() {
-    _mounted = false;
-    super.dispose();
+    final hashedPassword = secretSaltProvider.hashPassword(
+        state.password, secretSaltProvider.secretSalt);
+
+    final result = await autheticationRepository.signIn(
+      state.username,
+      hashedPassword,
+    );
+
+    result.when(
+      left: (_) => state = state.copyWith(fetching: false),
+      right: (_) => null,
+    );
+
+    return result;
   }
 }

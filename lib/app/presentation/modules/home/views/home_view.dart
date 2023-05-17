@@ -1,25 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-import '../../../../domain/repositories/authentication_repository.dart';
-import '../../../routes/routes.dart';
+import 'widgets/team_list.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   const HomeView({super.key});
 
   @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: TextButton(
-          onPressed: () async {
-            context.read<AutheticationRepository>().signOut();
-            Navigator.pushReplacementNamed(
-              context,
-              Routes.signIn,
-            );
-          },
-          child: const Text('Cerrar Sesión'),
+    return const Scaffold(
+      body: SafeArea(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 10,
+            ),
+            TeamList(),
+          ],
         ),
       ),
     );
