@@ -27,7 +27,6 @@ class TeamIslas extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(20),
             child: Material(
-              color: const Color(0xffA8DADC),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: DropdownButton<Islas>(
@@ -40,7 +39,7 @@ class TeamIslas extends StatelessWidget {
                       child: Text('Todas las Islas'),
                     ),
                     DropdownMenuItem(
-                      value: Islas.option2,
+                      value: Islas.lanzarote,
                       child: Text('Lanzarote'),
                     ),
                   ],

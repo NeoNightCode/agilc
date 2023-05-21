@@ -1,6 +1,7 @@
 import '../../domain/either/either.dart';
 import '../../domain/enums.dart';
 import '../../domain/failures/http_request/http_request_failure.dart';
+import '../../domain/models/luchador/luchador.dart';
 import '../../domain/models/team/team.dart';
 import '../../domain/repositories/team_repository.dart';
 import '../services/remote/team_service.dart';
@@ -13,5 +14,10 @@ class TeamRepositoryImpl implements TeamRepository {
   @override
   Future<Either<HttpRequestFailure, List<Team>>> getTeams(Islas islas) {
     return _teamService.getTeams(islas);
+  }
+
+  @override
+  Future<Either<HttpRequestFailure, List<Luchador>>> getLuchadores() {
+    return _teamService.getLuchadores();
   }
 }

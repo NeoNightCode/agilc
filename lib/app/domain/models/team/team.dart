@@ -11,10 +11,10 @@ part 'team.g.dart';
 class Team with _$Team {
   const factory Team({
     @JsonKey(name: '_id') required String id,
-    required String nombre,
-    required String isla,
-    required List<Luchador> luchadores,
-    required List<Directivo> directivos,
+    required String name,
+    required String island,
+    required List<Luchador> fighters,
+    required List<Directivo> personnel,
     @JsonKey(name: 'image') required String imagePath,
   }) = _Team;
 

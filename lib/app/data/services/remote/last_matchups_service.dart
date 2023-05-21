@@ -1,24 +1,22 @@
 import '../../../domain/either/either.dart';
-import '../../../domain/enums.dart';
 import '../../../domain/failures/http_request/http_request_failure.dart';
-import '../../../domain/models/luchador/luchador.dart';
+import '../../../domain/models/matchup/matchup.dart';
 import '../../http/http.dart';
 import '../utils/handle_failure.dart';
 
-class LuchadorService {
+class LastMatchupsService {
   final Http _http;
 
-  LuchadorService(this._http);
+  LastMatchupsService(this._http);
 
-  Future<Either<HttpRequestFailure, List<Luchador>>> getTeams(
-      Islas islas) async {
+  Future<Either<HttpRequestFailure, List<Matchup>>> getLastMatchups() async {
     final result = await _http.request(
-      '/luchadores/${islas.name}',
+      '/ultimos_enfrentamientos',
       onSuccess: (json) {
         final list = List.from(json);
         return list
             .map(
-              (e) => Luchador.fromJson(e),
+              (e) => Matchup.fromJson(e),
             )
             .toList();
       },

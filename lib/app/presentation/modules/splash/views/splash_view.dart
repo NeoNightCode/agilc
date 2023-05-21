@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../../../domain/repositories/account_repository.dart';
 import '../../../../domain/repositories/authentication_repository.dart';
 import '../../../../domain/repositories/connectivity_repository.dart';
+import '../../../../generated/assets.gen.dart';
 import '../../../global/controllers/session_controller.dart';
 import '../../../routes/routes.dart';
 
@@ -67,12 +68,19 @@ class _SplashViewState extends State<SplashView> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
-        child: SizedBox(
-          width: 80,
-          height: 80,
-          child: CircularProgressIndicator(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              Assets.images.agilcLogo.path,
+              width: 150,
+              height: 150,
+            ),
+            const SizedBox(height: 16),
+            const CircularProgressIndicator(),
+          ],
         ),
       ),
     );

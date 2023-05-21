@@ -7,12 +7,12 @@ part 'luchador.g.dart';
 class Luchador with _$Luchador {
   const factory Luchador({
     @JsonKey(name: '_id') required String id,
-    @JsonKey(name: 'nombre') required String name,
-    @JsonKey(name: 'numero_ficha') required String numFicha,
-    @JsonKey(name: 'categoria') required String category,
-    @JsonKey(name: 'clasificacion') required String classification,
+    required String name,
+    @JsonKey(name: 'registration_number') required String numFicha,
+    required String category,
+    required String classification,
     @JsonKey(name: 'image') required String imagePath,
-    @JsonKey(name: 'edad') required int age,
+    required int age,
   }) = _Luchador;
 
   factory Luchador.fromJson(Map<String, dynamic> json) =>

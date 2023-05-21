@@ -33,7 +33,6 @@ class AccessTokenService {
   }
 
   Future<void> signOut() async {
-    await _secureStorage.delete(key: _refreshToken);
-    await _secureStorage.delete(key: _accessToken);
+    await _secureStorage.deleteAll();
   }
 }
