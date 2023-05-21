@@ -48,7 +48,7 @@ class _SplashViewState extends State<SplashView> {
 
       if (user != null) {
         sessionController.setUser(user);
-        return Routes.home;
+        return Routes.main; // Updated this line
       }
 
       return Routes.signIn;

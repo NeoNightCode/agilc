@@ -1,8 +1,25 @@
 import 'global_maps.dart';
 
-enum FavoritesType {
-  competition,
-  team,
+enum CompetitionClassification {
+  all,
+  primera,
+  segunda,
+  tercera,
+}
+
+extension CompetitionClassificationExtension on CompetitionClassification {
+  String get value {
+    switch (this) {
+      case CompetitionClassification.all:
+        return competitionCategoryMap['Todas las Clasificaciones']!;
+      case CompetitionClassification.primera:
+        return competitionCategoryMap['Primera']!;
+      case CompetitionClassification.segunda:
+        return competitionCategoryMap['Segunda']!;
+      case CompetitionClassification.tercera:
+        return competitionCategoryMap['Tercera']!;
+    }
+  }
 }
 
 enum Preference {

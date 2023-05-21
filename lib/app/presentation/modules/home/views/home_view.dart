@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../routes/routes.dart';
 import '../controller/home_controller.dart';
 import '../controller/state/home_state.dart';
 import 'widgets/last_matchups_list.dart';
@@ -22,22 +21,6 @@ class _HomeViewState extends State<HomeView> {
         lastMatchupsRepository: context.read(),
       )..init(),
       child: Scaffold(
-        appBar: AppBar(
-          actions: [
-            IconButton(
-              onPressed: () {
-                Navigator.pushNamed(
-                  context,
-                  Routes.profile,
-                );
-              },
-              icon: const Icon(
-                Icons.person,
-                color: Colors.black,
-              ),
-            ),
-          ],
-        ),
         body: SafeArea(
           child: LayoutBuilder(
             builder: (context, constraints) => RefreshIndicator(
@@ -46,7 +29,6 @@ class _HomeViewState extends State<HomeView> {
                 children: [
                   SizedBox(height: 5),
                   Expanded(child: LastMatchupsList()),
-                  SizedBox(height: 20),
                 ],
               ),
             ),

@@ -20,9 +20,6 @@ ThemeData getTheme(bool darkMode) {
         darkTheme.textTheme,
       ),
       scaffoldBackgroundColor: AppColors.backgroundDark,
-      appBarTheme: const AppBarTheme(
-        backgroundColor: Colors.transparent,
-      ),
       switchTheme: SwitchThemeData(
         trackColor: MaterialStateProperty.all(
           AppColors.secundaryDark.withOpacity(0.5),

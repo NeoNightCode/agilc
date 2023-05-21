@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'app/data/http/http.dart';
 import 'app/data/repositories_implementation/account_repository_impl.dart';
 import 'app/data/repositories_implementation/authentication_repository_impl.dart';
+import 'app/data/repositories_implementation/competition_repository_impl.dart';
 import 'app/data/repositories_implementation/connectivity_repository_impl.dart';
 import 'app/data/repositories_implementation/last_matchups_repository_impl.dart';
 import 'app/data/repositories_implementation/preferences_repository_impl.dart';
@@ -18,11 +19,13 @@ import 'app/data/services/local/access_token_service.dart';
 import 'app/data/services/local/secret_salt_provider.dart';
 import 'app/data/services/remote/account_service.dart';
 import 'app/data/services/remote/authentication_service.dart';
+import 'app/data/services/remote/competition_service.dart';
 import 'app/data/services/remote/internet_checker.dart';
 import 'app/data/services/remote/last_matchups_service.dart';
 import 'app/data/services/remote/team_service.dart';
 import 'app/domain/repositories/account_repository.dart';
 import 'app/domain/repositories/authentication_repository.dart';
+import 'app/domain/repositories/competition_repository.dart';
 import 'app/domain/repositories/connectivity_repository.dart';
 import 'app/domain/repositories/last_matchups_repository.dart';
 import 'app/domain/repositories/preferences_repository.dart';
@@ -86,6 +89,11 @@ Future<void> main() async {
         Provider<LastMatchupsRepository>(create: (_) {
           return LastMatchupsRepositoryImpl(
             LastMatchupsService(http),
+          );
+        }),
+        Provider<CompetitionRepository>(create: (_) {
+          return CompetitionRepositoryImpl(
+            CompetitionService(http),
           );
         }),
         ChangeNotifierProvider<SecretSaltProvider>(
