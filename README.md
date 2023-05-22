@@ -7,7 +7,23 @@ Bienvenido al repositorio de AgilC, una aplicación móvil desarrollada con Flut
 ## Despliegue Local
 
 Para desplegar la aplicación en tu entorno local, sigue los siguientes pasos:
-```bash
+```
 flutter pub get
 flutter pub run build_runner build
-bash```
+```
+
+
+## Recursos
+
+- [Video de Presentación](https://youtu.be/vh4dTFL8VK0)
+- [Repositorio de la API](https://github.com/NeoNightCode/agilc_api)
+
+## Sobre la API
+
+La API de AgilC está desarrollada en Python y se encuentra en un repositorio separado. Puedes encontrar más detalles en el [repositorio de la API](https://github.com/NeoNightCode/agilc_api).
+
+## Sobre AgilC
+
+AgilC es una aplicación móvil que busca acercar el deporte de la lucha canaria a sus aficionados. A través de una interfaz amigable y fácil de usar, los usuarios pueden mantenerse al tanto de las últimas noticias y eventos relacionados con la lucha canaria. La aplicación se desarrolló utilizando Flutter, un marco de trabajo de código abierto de Google para el desarrollo de aplicaciones móviles.
+
+Esperamos que disfrutes explorando este proyecto tanto como nosotros disfrutamos creándolo. Si tienes alguna pregunta o sugerencia, no dudes en abrir un issue. ¡Gracias por visitar!
