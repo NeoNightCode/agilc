@@ -1,7 +1,5 @@
 # AgilC - La App de Lucha Canaria
 
-![AgilC Logo](https://via.placeholder.com/150)
-
 Bienvenido al repositorio de AgilC, una aplicación móvil desarrollada con Flutter y una API en Python. Esta aplicación es un prototipo que muestra lo que podría ser una futura app destinada a los aficionados de la lucha canaria. Con datos de prueba, AgilC pretende mantener a los usuarios informados sobre este bonito deporte.
 
 ## Despliegue Local
@@ -25,5 +23,3 @@ La API de AgilC está desarrollada en Python y se encuentra en un repositorio se
 ## Sobre AgilC
 
 AgilC es una aplicación móvil que busca acercar el deporte de la lucha canaria a sus aficionados. A través de una interfaz amigable y fácil de usar, los usuarios pueden mantenerse al tanto de las últimas noticias y eventos relacionados con la lucha canaria. La aplicación se desarrolló utilizando Flutter, un marco de trabajo de código abierto de Google para el desarrollo de aplicaciones móviles.
-
-Esperamos que disfrutes explorando este proyecto tanto como nosotros disfrutamos creándolo. Si tienes alguna pregunta o sugerencia, no dudes en abrir un issue. ¡Gracias por visitar!
