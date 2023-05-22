@@ -29,5 +29,6 @@ class Fixtures with _$Fixtures {
     required List<Matchup> matchups,
   }) = _Fixtures;
 
-  factory Fixtures.fromJson(Json json) => _$FixturesFromJson(json);
+  factory Fixtures.fromJson(Map<String, dynamic> json) =>
+      _$FixturesFromJson(json);
 }

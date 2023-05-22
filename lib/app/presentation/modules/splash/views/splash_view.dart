@@ -6,6 +6,7 @@ import '../../../../domain/repositories/authentication_repository.dart';
 import '../../../../domain/repositories/connectivity_repository.dart';
 import '../../../../generated/assets.gen.dart';
 import '../../../global/controllers/session_controller.dart';
+import '../../../global/controllers/theme_controller.dart';
 import '../../../routes/routes.dart';
 
 class SplashView extends StatefulWidget {
@@ -68,13 +69,17 @@ class _SplashViewState extends State<SplashView> {
 
   @override
   Widget build(BuildContext context) {
+    final themeController = Provider.of<ThemeController>(context);
+    final darkMode = themeController.darkMode;
     return Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              Assets.images.agilcLogo.path,
+              darkMode
+                  ? Assets.images.agilcLogoDark.path
+                  : Assets.images.agilcLogoDark.path,
               width: 150,
               height: 150,
             ),

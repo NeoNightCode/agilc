@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../routes/routes.dart';
 import '../../competition/views/competition_view.dart';
 import '../../settings/settings_view.dart';
+import '../../team/views/team_view.dart';
 import 'home_view.dart';
 import 'widgets/bottom_navigation_bar.dart';
 
@@ -45,7 +46,7 @@ class _MainViewState extends State<MainView> {
               builder = (BuildContext _) => const CompetitionView();
               break;
             case Routes.teams:
-              builder = (BuildContext _) => const HomeView();
+              builder = (BuildContext _) => const TeamView();
               break;
             case Routes.settings:
               builder = (BuildContext _) => const SettingsView();

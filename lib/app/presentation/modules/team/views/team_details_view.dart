@@ -1,11 +1,9 @@
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../../../../domain/models/team/team.dart';
-import '../../../global/widgets/request_failed.dart';
-import '../controller/state/team_state.dart';
-import '../controller/team_controller.dart';
-import 'widgets/team_content.dart';
+import 'widgets/fighter_card.dart';
+import 'widgets/person_card.dart';
 
 class TeamDetailsView extends StatelessWidget {
   const TeamDetailsView({Key? key, required this.team}) : super(key: key);
@@ -14,28 +12,93 @@ class TeamDetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => TeamController(
-        TeamListState.loading(),
-        team: team,
-      )..init(),
-      builder: (context, _) {
-        final TeamController controller = context.watch();
-        return Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.transparent,
-          ),
-          body: controller.state.map(
-            loading: (_) => const Center(
-              child: CircularProgressIndicator(),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Detalles del equipo'),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: ExtendedImage.network(team.imagePath),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        team.name,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Isla: ${team.island}'),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            failed: (_) => RequestFailed(
-              onRetry: () => controller.init(),
+            const SizedBox(
+              height: 20,
             ),
-            loaded: (state) => TeamContent(state: state),
-          ),
-        );
-      },
+            const Text(
+              'Listado Luchadores',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: team.fighters.length,
+              itemBuilder: (context, index) {
+                final fighter = team.fighters[index];
+                return FighterCard(
+                  fighter: fighter,
+                  height: 100,
+                );
+              },
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            const Text(
+              'Listado Directivos',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: team.personnel.length,
+              itemBuilder: (context, index) {
+                final person = team.personnel[index];
+                return PersonCard(
+                  person: person,
+                  height: 100,
+                );
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

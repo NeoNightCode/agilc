@@ -3,17 +3,17 @@ import 'package:provider/provider.dart';
 
 import '../../../../../domain/enums.dart';
 import '../../../../global/widgets/request_failed.dart';
-import '../../controller/competition_controller.dart';
-import '../../controller/state/competition_state.dart';
-import 'competition_card.dart';
+import '../../controller/state/team_state.dart';
+import '../../controller/team_controller.dart';
+import 'team_card.dart';
 
-class CompetitionList extends StatelessWidget {
-  const CompetitionList({super.key});
+class TeamListView extends StatelessWidget {
+  const TeamListView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final CompetitionController controller = context.watch();
-    final competitions = controller.state;
+    final TeamController controller = context.watch();
+    final teams = controller.state;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -21,7 +21,7 @@ class CompetitionList extends StatelessWidget {
           height: 5,
         ),
         const Text(
-          'Competiciones',
+          'Equipos',
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 20,
@@ -30,20 +30,20 @@ class CompetitionList extends StatelessWidget {
         ),
         Expanded(
           child: Center(
-            child: competitions.when(
+            child: teams.when(
               loading: (_) => const CircularProgressIndicator(),
               failed: (_) => RequestFailed(onRetry: () {
-                controller.loadCompetitions(
-                  const CompetitionState.loading(CompetitionClassification.all),
+                controller.loadTeams(
+                  TeamState.loading(Islas.all),
                 );
               }),
               loaded: (_, list) => ListView.separated(
                 padding: const EdgeInsets.symmetric(vertical: 15),
                 itemBuilder: (_, index) {
-                  final competition = list[index];
-                  return CompetitionCard(
+                  final team = list[index];
+                  return TeamCard(
                     height: 100,
-                    competition: competition,
+                    team: team,
                   );
                 },
                 itemCount: list.length,

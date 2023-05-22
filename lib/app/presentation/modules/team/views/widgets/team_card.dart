@@ -1,11 +1,11 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 
-import '../../../domain/models/team/team.dart';
-import '../../modules/team/views/team_details_view.dart';
+import '../../../../../domain/models/team/team.dart';
+import '../team_details_view.dart';
 
-class ShowCard extends StatelessWidget {
-  const ShowCard({
+class TeamCard extends StatelessWidget {
+  const TeamCard({
     Key? key,
     required this.team,
     required this.height,
@@ -30,27 +30,27 @@ class ShowCard extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10),
         child: Card(
-          child: Row(
-            children: <Widget>[
-              Align(
-                alignment: Alignment.centerLeft,
-                child: ExtendedImage.network(
-                  team.imagePath,
-                  height: imageHeight,
-                  width: imageWidth,
-                  loadStateChanged: (state) {
-                    if (state.extendedImageLoadState == LoadState.loading) {
-                      return Container(
-                        color: Colors.black12,
-                      );
-                    }
-                    return state.completedWidget;
-                  },
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: ExtendedImage.network(
+                    team.imagePath,
+                    height: imageHeight,
+                    width: imageWidth,
+                    loadStateChanged: (state) {
+                      if (state.extendedImageLoadState == LoadState.loading) {
+                        return Container(
+                          color: Colors.black12,
+                        );
+                      }
+                      return state.completedWidget;
+                    },
+                  ),
                 ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 10),
+                Expanded(
                   child: Text(
                     team.name,
                     textAlign: TextAlign.center,
@@ -59,8 +59,8 @@ class ShowCard extends StatelessWidget {
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

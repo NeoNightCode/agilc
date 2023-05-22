@@ -1,5 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../typedefs.dart';
+
 part 'matchup.freezed.dart';
 part 'matchup.g.dart';
 
@@ -14,8 +16,7 @@ class Matchup with _$Matchup {
     required DateTime date,
   }) = _Matchup;
 
-  factory Matchup.fromJson(Map<String, dynamic> json) =>
-      _$MatchupFromJson(json);
+  factory Matchup.fromJson(Json json) => _$MatchupFromJson(json);
 }
 
 @freezed
@@ -26,6 +27,5 @@ class Results with _$Results {
     @JsonKey(name: 'points_away_team') String? pointsAwayTeam,
   }) = _Results;
 
-  factory Results.fromJson(Map<String, dynamic> json) =>
-      _$ResultsFromJson(json);
+  factory Results.fromJson(Json json) => _$ResultsFromJson(json);
 }

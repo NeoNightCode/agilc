@@ -8,5 +8,6 @@ class SignInState with _$SignInState {
     @Default('') String username,
     @Default('') String password,
     @Default(false) bool fetching,
+    @Default(true) bool hidePassword,
   }) = _SignInState;
 }

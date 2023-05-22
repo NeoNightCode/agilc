@@ -7,6 +7,7 @@ import '../modules/offline/views/offline.view.dart';
 import '../modules/settings/settings_view.dart';
 import '../modules/sign_in/views/sign_in_view.dart';
 import '../modules/splash/views/splash_view.dart';
+import '../modules/team/views/team_view.dart';
 import 'routes.dart';
 
 Map<String, Widget Function(BuildContext)> get appRoutes {
@@ -16,7 +17,7 @@ Map<String, Widget Function(BuildContext)> get appRoutes {
     Routes.main: (context) => const MainView(),
     Routes.home: (context) => const HomeView(),
     Routes.competitions: (context) => const CompetitionView(),
-    Routes.teams: (context) => const SettingsView(),
+    Routes.teams: (context) => const TeamView(),
     Routes.settings: (context) => const SettingsView(),
     Routes.offline: (context) => const OfflineView(),
   };

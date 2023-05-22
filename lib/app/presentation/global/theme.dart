@@ -7,6 +7,8 @@ ThemeData getTheme(bool darkMode) {
   if (darkMode) {
     final darkTheme = ThemeData.dark();
     return darkTheme.copyWith(
+      appBarTheme: darkTheme.appBarTheme
+          .copyWith(backgroundColor: const Color(0xFF000033).withOpacity(0.7)),
       progressIndicatorTheme: darkTheme.progressIndicatorTheme.copyWith(
         color: const Color(0xFFFFDE00),
       ),
@@ -39,9 +41,8 @@ ThemeData getTheme(bool darkMode) {
       lightTheme.textTheme,
     ),
     scaffoldBackgroundColor: AppColors.backgroundLight,
-    appBarTheme: const AppBarTheme(
-      backgroundColor: Colors.transparent,
-    ),
+    appBarTheme: lightTheme.appBarTheme
+        .copyWith(backgroundColor: const Color(0xFFFFDE00).withOpacity(0.7)),
     switchTheme: SwitchThemeData(
       trackColor: MaterialStateProperty.all(
         AppColors.secundaryLight.withOpacity(0.5),

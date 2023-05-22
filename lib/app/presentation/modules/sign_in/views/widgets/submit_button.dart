@@ -6,28 +6,51 @@ import '../../../../routes/routes.dart';
 import '../../controller/sign_in_controller.dart';
 
 class SubmitButton extends StatelessWidget {
-  const SubmitButton({super.key});
+  final String buttonText;
+  final Color color;
+  final Color textColor;
+
+  const SubmitButton({
+    Key? key,
+    required this.buttonText,
+    required this.color,
+    required this.textColor,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final SignInController controller = Provider.of(context);
+    final SignInController controller = Provider.of<SignInController>(context);
     if (controller.state.fetching) {
       return const CircularProgressIndicator();
     }
-    return MaterialButton(
+    return ElevatedButton(
       onPressed: () {
         final isValid = Form.of(context).validate();
-        if (isValid) {
+        if (isValid == true) {
           _submit(context);
         }
       },
-      color: Colors.blue,
-      child: const Text('Iniciar Sesión'),
+      style: ElevatedButton.styleFrom(
+        foregroundColor: textColor,
+        backgroundColor: color,
+        textStyle: const TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.bold,
+        ),
+        padding: const EdgeInsets.symmetric(
+          vertical: 12,
+          horizontal: 24,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
+      child: Text(buttonText),
     );
   }
 
   Future<void> _submit(BuildContext context) async {
-    final SignInController controller = context.read();
+    final SignInController controller = context.read<SignInController>();
 
     final result = await controller.submit();
 
@@ -39,20 +62,21 @@ class SubmitButton extends StatelessWidget {
       left: (failure) {
         final message = failure.when(
           notFound: () => 'El usuario no existe',
-          network: () => 'Sin conección a Internet',
-          unauthorized: () => 'Credenciales Incorrectos',
-          unknown: () => 'Error Desconocido',
+          network: () => 'Sin conexión a Internet',
+          unauthorized: () => 'Credenciales incorrectos',
+          unknown: () => 'Error desconocido',
         );
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(message)),
         );
       },
       right: (user) {
-        final SessionController sessionController = context.read();
+        final SessionController sessionController =
+            context.read<SessionController>();
         sessionController.setUser(user);
         Navigator.pushReplacementNamed(
           context,
-          Routes.home,
+          Routes.main,
         );
       },
     );

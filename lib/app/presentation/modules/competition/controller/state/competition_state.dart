@@ -8,11 +8,11 @@ part 'competition_state.freezed.dart';
 @freezed
 class CompetitionState with _$CompetitionState {
   const factory CompetitionState.loading(
-          CompetitionClassification competitionClassification) =
-      CompetitionStateLoading;
+    CompetitionClassification competitionClassification,
+  ) = CompetitionStateLoading;
   const factory CompetitionState.failed(
-          CompetitionClassification competitionClassification) =
-      CompetitionStateFailed;
+    CompetitionClassification competitionClassification,
+  ) = CompetitionStateFailed;
   const factory CompetitionState.loaded({
     required CompetitionClassification competitionClassification,
     required List<Competition> competitions,

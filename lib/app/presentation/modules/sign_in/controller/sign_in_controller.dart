@@ -8,28 +8,29 @@ import 'state/sign_in_state.dart';
 
 class SignInController extends StateNotifier<SignInState> {
   SignInController(
-    super.state, {
+    SignInState state, {
     required this.autheticationRepository,
     required this.secretSaltProvider,
-  });
+  }) : super(state);
 
   final AutheticationRepository autheticationRepository;
-
   final SecretSaltProvider secretSaltProvider;
 
   void onUsernameChanged(String text) {
-    onlyUpdate(
-      state.copyWith(
-        username: text.trim().toLowerCase(),
-      ),
+    state = state.copyWith(
+      username: text.trim().toLowerCase(),
     );
   }
 
   void onPasswordChanged(String text) {
-    onlyUpdate(
-      state.copyWith(
-        password: text.replaceAll(' ', ''),
-      ),
+    state = state.copyWith(
+      password: text.replaceAll(' ', ''),
+    );
+  }
+
+  void togglePasswordVisibility() {
+    state = state.copyWith(
+      hidePassword: !state.hidePassword,
     );
   }
 
@@ -37,7 +38,9 @@ class SignInController extends StateNotifier<SignInState> {
     state = state.copyWith(fetching: true);
 
     final hashedPassword = secretSaltProvider.hashPassword(
-        state.password, secretSaltProvider.secretSalt);
+      state.password,
+      secretSaltProvider.secretSalt,
+    );
 
     final result = await autheticationRepository.signIn(
       state.username,
